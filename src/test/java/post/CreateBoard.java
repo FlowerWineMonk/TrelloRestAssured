@@ -11,11 +11,12 @@ public class CreateBoard extends BaseTest {
     @Test
     public void createBoard() {
         given()
+                .spec(getReqSpec())
                 .queryParam("name", "AutomateCreateBoard")
                 .when()
                 .post("/boards/")
                 .then()
-                .statusCode(200)
+                .spec(getResSpec())
                 .body("name", equalTo("AutomateCreateBoard"))
                 .body("id", notNullValue());
     }

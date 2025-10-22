@@ -11,20 +11,22 @@ public class UpdateBoard extends BaseTest {
     public void updateBoard() {
         String boardId =
                 given()
-                        .queryParam("name", "TempBoard")
+                        .spec(getReqSpec())
+                        .queryParam("name", "Temp Board For Update")
                         .when()
                         .post("/boards/")
                         .then()
-                        .statusCode(200)
+                        .spec(getResSpec())
                         .extract()
                         .path("id");
 
         given()
+                .spec(getReqSpec())
                 .queryParam("name", "UpdateBoardName")
                 .when()
                 .put("/boards/{id}", boardId)
                 .then()
-                .statusCode(200)
+                .spec(getResSpec())
                 .body("name", equalTo("UpdateBoardName"))
                 .body("id", equalTo(boardId));
     }

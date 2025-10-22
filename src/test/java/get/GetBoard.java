@@ -3,17 +3,19 @@ package get;
 import base.BaseTest;
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.when;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
 public class GetBoard extends BaseTest {
     @Test
     public void getBoard() {
-        when()
+        given()
+                .spec(getReqSpec())
+                .when()
                 .get("/boards/{id}", "5abbe4b7ddc1b351ef961414")
                 .then()
-                .statusCode(200)
+                .spec(getResSpec())
                 .body("name", equalTo("Trello Platform Changelog"))
                 .body("id", notNullValue());
     }

@@ -4,23 +4,25 @@ import base.BaseTest;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
 
 public class DeleteBoard extends BaseTest {
     @Test
     public void deleteBoard() {
         String boardId =
                 given()
-                        .queryParam("name", "Temp Board")
+                        .spec(getReqSpec())
+                        .queryParam("name", "Temp Board For Deletion")
                         .when()
                         .post("/boards/")
                         .then()
                         .extract()
                         .path("id");
 
-        when()
+        given()
+                .spec(getReqSpec())
+                .when()
                 .delete("/boards/{id}",boardId)
                 .then()
-                .statusCode(200);
+                .spec(getResSpec());
     }
 }
