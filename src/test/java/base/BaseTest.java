@@ -1,6 +1,7 @@
 package base;
 
 import configLoader.ConfigLoader;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
@@ -14,6 +15,7 @@ public class BaseTest {
                 .setAccept(ContentType.JSON)
                 .addQueryParam("key", ConfigLoader.get("API_KEY"))
                 .addQueryParam("token", ConfigLoader.get("TOKEN"))
+                .addFilter(new AllureRestAssured())
                 .build();
 
         private static final ResponseSpecification resSpec = new ResponseSpecBuilder()
