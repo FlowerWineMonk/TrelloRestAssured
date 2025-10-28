@@ -1,10 +1,10 @@
-package configLoader;
+package utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class ConfigLoader {
+public class ConfigReader {
     private static final Properties props = new Properties();
     private static final String CONFIG_PROPERTIES_PATH = "src/test/resources/config.properties";
 
