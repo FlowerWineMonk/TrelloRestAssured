@@ -1,0 +1,47 @@
+name: "Rest Assured CI"
+
+on:
+  schedule:
+    - cron: "0 12 * * 5"
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-22.04
+
+    env:
+      API_KEY: ${{ secrets.API_KEY }}
+      TOKEN: ${{ secrets.TOKEN }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up JDK21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Build with Gradle
+        run: ./gradlew build -x test
+
+      - name: Run tests
+        run: ./gradlew test
+
+      - name: Generate allure results
+        if: success() || failure()
+        run: ./gradlew allureReport || true
+
+      - name: Publish allure results
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: build/generated/tests/test |
+            build/allure-result
+          retention-days: 5
