@@ -33,15 +33,22 @@ jobs:
       - name: Run tests
         run: ./gradlew test
 
-      - name: Generate allure results
-        if: success() || failure()
-        run: ./gradlew allureReport || true
+      - name: Generate allure report
+        if: always()
+        run: ./gradlew allureReport
 
       - name: Publish allure results
-        if: success() || failure()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
-          path: build/generated/tests/test |
-            build/allure-result
+          name: allure-results
+          path: build/allure-results
+          retention-days: 5
+
+      - name: Publish allure report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: build/reports/allure-report/allureReport
           retention-days: 5
