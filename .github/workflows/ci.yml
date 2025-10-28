@@ -37,14 +37,6 @@ jobs:
         if: always()
         run: ./gradlew allureReport
 
-      - name: Publish allure results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results
-          path: build/allure-results
-          retention-days: 5
-
       - name: Publish allure report
         if: always()
         uses: actions/upload-artifact@v4
