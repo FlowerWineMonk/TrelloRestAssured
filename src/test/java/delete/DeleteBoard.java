@@ -1,28 +1,31 @@
 package delete;
 
 import base.BaseTest;
+import enums.BoardEndpoints;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.nullValue;
 
 public class DeleteBoard extends BaseTest {
     @Test
     public void deleteBoard() {
         String boardId =
                 given()
-                        .spec(getReqSpec())
+                        .spec(getDefaultRequestSpecification())
                         .queryParam("name", "Temp Board For Deletion")
                         .when()
-                        .post("/boards/")
+                        .post(BoardEndpoints.CREATE_BOARD.getEndpoint())
                         .then()
                         .extract()
                         .path("id");
 
         given()
-                .spec(getReqSpec())
+                .spec(getDefaultRequestSpecification())
                 .when()
-                .delete("/boards/{id}",boardId)
+                .delete(BoardEndpoints.DELETE_BOARD.getEndpoint(), boardId)
                 .then()
-                .spec(getResSpec());
+                .statusCode(200)
+                .body("id", nullValue());
     }
 }

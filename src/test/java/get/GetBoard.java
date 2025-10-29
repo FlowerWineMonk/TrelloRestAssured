@@ -1,6 +1,7 @@
 package get;
 
 import base.BaseTest;
+import enums.BoardEndpoints;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -11,11 +12,11 @@ public class GetBoard extends BaseTest {
     @Test
     public void getBoard() {
         given()
-                .spec(getReqSpec())
+                .spec(getDefaultRequestSpecification())
                 .when()
-                .get("/boards/{id}", "5abbe4b7ddc1b351ef961414")
+                .get(BoardEndpoints.GET_BOARD.getEndpoint(), "5abbe4b7ddc1b351ef961414")
                 .then()
-                .spec(getResSpec())
+                .statusCode(200)
                 .body("name", equalTo("Trello Platform Changelog"))
                 .body("id", notNullValue());
     }
