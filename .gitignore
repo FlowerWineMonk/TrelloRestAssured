@@ -45,3 +45,4 @@ bin/
 
 ### Others ###
 .env
+logs
