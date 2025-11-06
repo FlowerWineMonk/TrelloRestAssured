@@ -1,6 +1,7 @@
 package post;
 
 import base.BaseTest;
+import enums.BoardEndpoints;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -11,9 +12,10 @@ public class CreateBoard extends BaseTest {
     @Test
     public void createBoard() {
         given()
+                .spec(getDefaultRequestSpecification())
                 .queryParam("name", "AutomateCreateBoard")
                 .when()
-                .post("/boards/")
+                .post(BoardEndpoints.CREATE_BOARD.getEndpoint())
                 .then()
                 .statusCode(200)
                 .body("name", equalTo("AutomateCreateBoard"))

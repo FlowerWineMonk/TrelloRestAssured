@@ -1,36 +1,31 @@
-package put;
+package delete;
 
 import base.BaseTest;
 import enums.BoardEndpoints;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.*;
-
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
 
-public class UpdateBoard extends BaseTest {
+public class DeleteBoard extends BaseTest {
     @Test
-    public void updateBoard() {
+    public void deleteBoard() {
         String boardId =
                 given()
                         .spec(getDefaultRequestSpecification())
-                        .queryParam("name", "Temp Board For Update")
+                        .queryParam("name", "Temp Board For Deletion")
                         .when()
                         .post(BoardEndpoints.CREATE_BOARD.getEndpoint())
                         .then()
-                        .statusCode(200)
                         .extract()
                         .path("id");
 
         given()
                 .spec(getDefaultRequestSpecification())
-                .queryParam("name", "UpdateBoardName")
                 .when()
-                .put(BoardEndpoints.UPDATE_BOARD.getEndpoint(), boardId)
+                .delete(BoardEndpoints.DELETE_BOARD.getEndpoint(), boardId)
                 .then()
                 .statusCode(200)
-                .body("name", equalTo("UpdateBoardName"))
-                .body("id", equalTo(boardId));
+                .body("id", nullValue());
     }
 }
